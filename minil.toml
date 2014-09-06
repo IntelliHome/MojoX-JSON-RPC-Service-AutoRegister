@@ -1,0 +1,4 @@
+name = "MojoX-JSON-RPC-Simple"
+badges = ["travis"]
+module_maker="ModuleBuildTiny"
+
