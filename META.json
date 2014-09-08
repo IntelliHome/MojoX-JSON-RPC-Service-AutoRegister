@@ -62,7 +62,8 @@
       },
       "homepage" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple",
       "repository" : {
-         "url" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple.git",
+         "type" : "git",
+         "url" : "git://github.com/IntelliHome/MojoX-JSON-RPC-Simple.git",
          "web" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple"
       }
    },
