@@ -17,7 +17,7 @@ package MyService;
 use Mojo::Base 'MojoX::JSON::RPC::Simple::Service';
 
 sub multiply {
-    my ( $self,$tx,$dispatcher, @params ) = @_;
+    my ( $self, $tx, $dispatcher, @params ) = @_;
     my $m = 1;
     $m *= $_ for @params;
 
@@ -25,46 +25,51 @@ sub multiply {
 }
 
 sub echo {
-    my ( $self,$tx,$dispatcher, @params ) = @_;
+    my ( $self, $tx, $dispatcher, @params ) = @_;
 
     return $params[0];
 }
 
 sub echo_key {
-    my ( $self,$tx,$dispatcher, $param ) = @_;
+    my ( $self, $tx, $dispatcher, $param ) = @_;
 
     return exists $param->{key} ? $param->{key} : '?';
 }
 
 sub register {
-    my ($self,$tx,$dispatcher) = @_;
+    my ( $self, $tx, $dispatcher ) = @_;
     return 'register can be used';
 }
 
-sub rpc_register{
-       my ($self,$tx,$dispatcher) = @_;
-    return 'register can be used';
-}
-sub _test_register{
-       my ($self,$tx,$dispatcher) = @_;
+sub rpc_register {
+    my ( $self, $tx, $dispatcher ) = @_;
     return 'register can be used';
 }
 
+sub _test_register {
+    my ( $self, $tx, $dispatcher ) = @_;
+    return 'register can be used';
+}
+
+sub suffix_register {
+    my ( $self, $tx, $dispatcher ) = @_;
+    return 'register can be used';
+}
 
 sub _rpcs {
-    my ($self,$tx,$dispatcher) = @_;
+    my ( $self, $tx, $dispatcher ) = @_;
     return '_rpcs can be used';
 }
 
 sub substract {
-    my ( $self,$tx,$dispatcher,  $res, @params ) = @_;
+    my ( $self, $tx, $dispatcher, $res, @params ) = @_;
     $res = 0 if !defined $res;
     $res -= $_ for @params;
     return $res;
 }
 
 sub update {
-    my ( $self,$tx,$dispatcher,  @params ) = @_;
+    my ( $self, $tx, $dispatcher, @params ) = @_;
 
     # notification only
 
@@ -72,7 +77,7 @@ sub update {
 }
 
 sub foobar {
-    my ($self,$tx,$dispatcher) = @_;
+    my ( $self, $tx, $dispatcher ) = @_;
 
     # notification only
 
@@ -86,6 +91,7 @@ __PACKAGE__->register_rpc_method_names(
 
 __PACKAGE__->register_rpc;
 __PACKAGE__->register_rpc_regex(qr/^_test/);
+__PACKAGE__->register_rpc_suffix("suffix");
 
 #-------------------------------------------------------------------
 
@@ -100,7 +106,7 @@ use MojoX::JSON::RPC::Simple::Service;
 sub startup {
     my $self = shift;
 
-    $self->secrets(['Testing!']);
+    $self->secrets( ['Testing!'] );
 
     # Load our test plugin
     my $svc = MojoX::JSON::RPC::Simple::Service->new->register(
@@ -191,7 +197,7 @@ package main;
 
 use TestUts;
 
-use Test::More tests => 38;
+use Test::More tests => 39;
 use Test::Mojo;
 
 use_ok 'MojoX::JSON::RPC::Simple::Service';
@@ -263,6 +269,18 @@ TestUts::test_call(
         id     => 2
     },
     '_test_register 1 with regex'
+);
+
+TestUts::test_call(
+    $client,
+    '/jsonrpc2',
+    {   id     => 2,
+        method => 'suffix_register',
+    },
+    {   result => 'register can be used',
+        id     => 2
+    },
+    'suffix_register 1 with regex'
 );
 
 TestUts::test_call(

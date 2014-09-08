@@ -21,37 +21,41 @@ L<MojoX::JSON::RPC::Simple>, L<MojoX::JSON::RPC::Service>
 sub new {
     my $self = shift;
     $self = $self->SUPER::new(@_);
-    $self->{'_rpcs'}->{$_}->{'with_mojo_tx'}  = $self->{'_rpcs'}->{$_}->{'with_svc_obj'} =$self->{'_rpcs'}->{$_}->{'with_self'} = 1
+    $self->{'_rpcs'}->{$_}->{'with_mojo_tx'}
+        = $self->{'_rpcs'}->{$_}->{'with_svc_obj'}
+        = $self->{'_rpcs'}->{$_}->{'with_self'} = 1
         for ( keys %{ $self->{'_rpcs'} } );
     return $self;
 }
 
 sub register_rpc {
-    my $symbol = { eval( '%' . caller . "::" ) };
-    local @_;
-    foreach my $entry ( keys %{$symbol} ) {
-        no strict 'refs';
-        if ( defined &{ caller . "::$entry" } ) {
-            push( @_, $entry ) if $entry =~ /^rpc\_/; # this allows method suffixed by rpc_ to be automatically exported as rpc public services
-        }
-    }
-    use strict 'refs';
-    caller->register_rpc_method_names(@_);
+    __PACKAGE__->MojoX::JSON::RPC::Simple::Service::register_rpc_regex(
+        qr/^rpc\_/, (caller)[0] );
+}
+
+sub register_rpc_suffix {
+    shift;
+    my $suffix = shift;
+    __PACKAGE__->MojoX::JSON::RPC::Simple::Service::register_rpc_regex(
+        qr/^$suffix\_/, (caller)[0] );
 }
 
 sub register_rpc_regex {
     shift;
-    my $r=shift;
-    my $symbol = { eval( '%' . caller . "::" ) };
+    my $r = shift;
+    my $p = shift // caller;
+    my $symbol = { eval( '%' . $p . "::" ) };
     local @_;
     foreach my $entry ( keys %{$symbol} ) {
         no strict 'refs';
-        if ( defined &{ caller . "::$entry" } ) {
-            push( @_, $entry ) if $entry =~ $r; # this allows functions that match the regex to be automatically exported as rpc public services
+        if ( defined &{ $p . "::$entry" } ) {
+            push( @_, $entry )
+                if $entry =~ $r
+                ; # this allows functions that match the regex to be automatically exported as rpc public services
         }
     }
     use strict 'refs';
-    caller->register_rpc_method_names(@_);
+    $p->register_rpc_method_names(@_);
 }
 
 1;
