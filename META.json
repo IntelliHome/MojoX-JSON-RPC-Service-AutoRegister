@@ -1,7 +1,7 @@
 {
-   "abstract" : "A simple RPC server for Mojolicious, based on MojoX::JSON::RPC::Service",
+   "abstract" : "Base class for RPC Services",
    "author" : [
-      "mudler <mudler@dark-lab.net>"
+      "mudler <mudler@dark-lab.net>, vytas <vytas@cpan.org>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v2.1.1, CPAN::Meta::Converter version 2.142060",
@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : "2"
    },
-   "name" : "MojoX-JSON-RPC-Simple",
+   "name" : "MojoX-JSON-RPC-Service-AutoRegister",
    "no_index" : {
       "directory" : [
          "t",
@@ -44,7 +44,7 @@
          "requires" : {
             "Mojo::Base" : "0",
             "MojoX::JSON::RPC::Service" : "0",
-            "perl" : "5.008005"
+            "perl" : "5.008_005"
          }
       },
       "test" : {
@@ -58,14 +58,17 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple/issues"
+         "web" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Service-AutoRegister/issues"
       },
-      "homepage" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple",
+      "homepage" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Service-AutoRegister",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/IntelliHome/MojoX-JSON-RPC-Simple.git",
-         "web" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Simple"
+         "url" : "git://github.com/IntelliHome/MojoX-JSON-RPC-Service-AutoRegister.git",
+         "web" : "https://github.com/IntelliHome/MojoX-JSON-RPC-Service-AutoRegister"
       }
    },
-   "version" : "0.01"
+   "version" : "0.001",
+   "x_contributors" : [
+      "Vytas Dauksa <vytdau@gmail.com>"
+   ]
 }

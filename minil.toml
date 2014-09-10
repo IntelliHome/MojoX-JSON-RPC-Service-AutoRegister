@@ -1,4 +1,4 @@
-name = "MojoX-JSON-RPC-Simple"
+name = "MojoX-JSON-RPC-Service-AutoRegister"
 badges = ["travis"]
 module_maker="ModuleBuildTiny"
 

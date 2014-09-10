@@ -15,14 +15,14 @@ use lib join '/', File::Spec->splitdir( dirname(__FILE__) ), '..', 'lib';
 
 use Mojolicious::Lite;
 
-use MojoX::JSON::RPC::Simple::Service;
+use MojoX::JSON::RPC::Service::AutoRegister;
 
 # Documentation browser under "/perldoc" (this plugin requires Perl 5.10)
 plugin 'PODRenderer';
 
 plugin 'json_rpc_dispatcher' => {
     services => {
-        '/jsonrpc' => MojoX::JSON::RPC::Simple::Service->new->register(
+        '/jsonrpc' => MojoX::JSON::RPC::Service::AutoRegister->new->register(
             'sum',
             sub {
                 my @params = @_;

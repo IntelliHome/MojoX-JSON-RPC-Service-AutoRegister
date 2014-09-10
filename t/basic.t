@@ -14,7 +14,7 @@ use lib join '/', File::Spec->splitdir( dirname(__FILE__) ), '..', 'lib';
 # Define custom service
 package MyService;
 
-use Mojo::Base 'MojoX::JSON::RPC::Simple::Service';
+use Mojo::Base 'MojoX::JSON::RPC::Service::AutoRegister';
 
 sub multiply {
     my ( $self, $tx, $dispatcher, @params ) = @_;
@@ -100,7 +100,7 @@ package MojoxJsonRpc;
 
 use Mojo::Base 'Mojolicious';
 
-use MojoX::JSON::RPC::Simple::Service;
+use MojoX::JSON::RPC::Service::AutoRegister;
 
 # This method will run once at server start
 sub startup {
@@ -109,7 +109,7 @@ sub startup {
     $self->secrets( ['Testing!'] );
 
     # Load our test plugin
-    my $svc = MojoX::JSON::RPC::Simple::Service->new->register(
+    my $svc = MojoX::JSON::RPC::Service::AutoRegister->new->register(
         'sum',
         sub {
             my @params = @_;
@@ -200,7 +200,7 @@ use TestUts;
 use Test::More tests => 39;
 use Test::Mojo;
 
-use_ok 'MojoX::JSON::RPC::Simple::Service';
+use_ok 'MojoX::JSON::RPC::Service::AutoRegister';
 use_ok 'MojoX::JSON::RPC::Client';
 
 my $t = Test::Mojo->new('MojoxJsonRpc');
@@ -234,7 +234,7 @@ TestUts::test_call(
     'multiply 1'
 );
 
-# Can call register which is also defined in MojoX::JSON::RPC::Simple::Service
+# Can call register which is also defined in MojoX::JSON::RPC::Service::AutoRegister
 TestUts::test_call(
     $client,
     '/jsonrpc2',
@@ -327,7 +327,7 @@ TestUts::test_call(
     'echo 3'
 );
 
-# Can call _rpcs which is an attribute of MojoX::JSON::RPC::Simple::Service
+# Can call _rpcs which is an attribute of MojoX::JSON::RPC::Service::AutoRegister
 TestUts::test_call(
     $client,
     '/jsonrpc2',
@@ -756,7 +756,7 @@ TestUts::test_call(
     [ { id => 3, method => 'test_with_all', params => [] } ],
     {   id     => 3,
         result => [
-            'MojoX::JSON::RPC::Simple::Service', 'Mojo::Transaction::HTTP',
+            'MojoX::JSON::RPC::Service::AutoRegister', 'Mojo::Transaction::HTTP',
             'MojoX::JSON::RPC::Dispatcher'
         ]
     },
